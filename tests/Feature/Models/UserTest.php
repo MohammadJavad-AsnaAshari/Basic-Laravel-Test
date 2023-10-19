@@ -5,6 +5,7 @@ namespace Tests\Feature\Models;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -13,20 +14,12 @@ use function Symfony\Component\String\u;
 class UserTest extends TestCase
 {
     // Use the RefreshDatabase trait to reset the database after each test.
-    use RefreshDatabase;
+    use RefreshDatabase,
+        ModelHelperTesting;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_insert_database()
+    protected function model(): Model
     {
-        $user = User::factory()->make()->toArray();
-        $user["password"] = "password";
-        User::create($user);
-
-        $this->assertDatabaseHas("users", $user);
+        return new User();
     }
 
     public function test_user_relationship_with_post()

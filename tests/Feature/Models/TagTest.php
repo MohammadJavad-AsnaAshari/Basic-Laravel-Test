@@ -4,25 +4,19 @@ namespace Tests\Feature\Models;
 
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TagTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,
+        ModelHelperTesting;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_insert_database()
+    protected function model(): Model
     {
-        $tag = Tag::factory()->make()->toArray();
-        Tag::create($tag);
-
-        $this->assertDatabaseHas("tags", $tag);
+        return new Tag();
     }
 
     public function test_tag_relationship_with_post()
