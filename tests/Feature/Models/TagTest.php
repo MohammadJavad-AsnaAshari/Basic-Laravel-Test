@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -9,7 +10,7 @@ use Tests\TestCase;
 
 class TagTest extends TestCase
 {
-    use RefreshDatabase;
+//    use RefreshDatabase;
 
     /**
      * A basic feature test example.
@@ -22,5 +23,14 @@ class TagTest extends TestCase
         Tag::create($tag);
 
         $this->assertDatabaseHas("tags", $tag);
+    }
+
+    public function test_tag_relationship_with_post()
+    {
+        $count = rand(0, 10);
+        $tag = Tag::factory()->hasPosts($count)->create();
+
+        $this->assertCount($count, $tag->posts);
+        $this->assertInstanceOf(Post::class, $tag->posts->first());
     }
 }

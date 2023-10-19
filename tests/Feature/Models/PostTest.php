@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,7 +11,7 @@ use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase;
+//    use RefreshDatabase;
 
     /**
      * A basic feature test example.
@@ -31,5 +32,14 @@ class PostTest extends TestCase
 
         $this->assertInstanceOf(User::class, $post->user);
         $this->assertTrue(isset($post->user->id));
+    }
+
+    public function test_post_relationship_with_tag()
+    {
+        $count = rand(0, 10);
+        $post = Post::factory()->hasTags($count)->create();
+
+        $this->assertCount($count, $post->tags);
+        $this->assertInstanceOf(Tag::class, $post->tags->first());
     }
 }
