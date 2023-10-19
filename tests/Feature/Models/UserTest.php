@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,5 +37,14 @@ class UserTest extends TestCase
 
         $this->assertCount($count, $user->posts);
         $this->assertInstanceOf(Post::class, $user->posts->first());
+    }
+
+    public function test_user_relationship_with_comment()
+    {
+        $count = rand(1, 10);
+        $user = User::factory()->hasComments($count)->create();
+
+        $this->assertCount($count, $user->comments);
+        $this->assertInstanceOf(Comment::class, $user->comments->first());
     }
 }
