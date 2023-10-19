@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
@@ -16,6 +17,8 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+//            'type' => new Sequence("admin", "user"),  // Define a sequence for the "type" attribute. This will produce alternating values of "user" and "admin".
+            'type' => $this->faker->randomElement(["admin","user"]),    // Generate a random "user" or "admin" value for the "type" attribute.
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
