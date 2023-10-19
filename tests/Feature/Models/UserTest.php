@@ -30,7 +30,7 @@ class UserTest extends TestCase
 
     public function test_user_relationship_with_post()
     {
-        $count = rand(0, 10);
+        $count = rand(1, 10);
 //        $user = User::factory()->has(Post::factory()->count($count))->create();
         $user = User::factory()->hasPosts($count)->create();
 

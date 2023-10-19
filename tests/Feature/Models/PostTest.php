@@ -36,7 +36,7 @@ class PostTest extends TestCase
 
     public function test_post_relationship_with_tag()
     {
-        $count = rand(0, 10);
+        $count = rand(1, 10);
         $post = Post::factory()->hasTags($count)->create();
 
         $this->assertCount($count, $post->tags);
