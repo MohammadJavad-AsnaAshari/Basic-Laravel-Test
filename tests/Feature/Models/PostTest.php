@@ -10,12 +10,13 @@ use Tests\TestCase;
 class PostTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function test_inset_data()
+    public function test_insert_database()
     {
         $post = Post::factory()->make()->toArray();
         Post::create($post);
