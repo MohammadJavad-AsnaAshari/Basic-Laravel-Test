@@ -13,13 +13,13 @@ trait ModelHelperTesting
         $model = $this->model();
         $table = $this->model()->getTable();
 
-        $comment = $model::factory()->make()->toArray();
+        $data = $model::factory()->make()->toArray();
         if ($model instanceof User)
-            $comment["password"] = "password";
+            $data["password"] = "password";
 
-        $model::create($comment);
+        $model::create($data);
 
-        $this->assertDatabaseHas($table, $comment);
+        $this->assertDatabaseHas($table, $data);
     }
 
     abstract protected function model(): Model;
