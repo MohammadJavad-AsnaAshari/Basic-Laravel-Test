@@ -1,5 +1,7 @@
 @extends("layouts.layout")
 
 @section("content")
-    Home Page
+    <h1>
+        Home Page
+    </h1>
 @endsection
