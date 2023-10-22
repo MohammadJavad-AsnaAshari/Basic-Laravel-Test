@@ -35,6 +35,7 @@ class SingleControllerTest extends TestCase
 
     public function testCommentMethodWhenUserLoggedIn()
     {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $post = Post::factory()->create();
 
