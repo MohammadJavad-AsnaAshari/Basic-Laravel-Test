@@ -49,4 +49,20 @@ class SingleControllerTest extends TestCase
         $response->assertRedirect(route("single", $post->id));
         $this->assertDatabaseHas("comments", $comment);
     }
+
+    public function testCommentMethodWhenUserNotLoggedIn()
+    {
+        $post = Post::factory()->create();
+
+        $comment = Comment::factory()->state([
+            "commentable_id" => $post->id,
+        ])->make()->toArray();
+
+        unset($comment["user_id"]);
+
+        $response = $this->post(route("single.comment", $post->id), ["text" => $comment["text"]]);
+//        $response->assertUnauthorized();      // we can't use this method! because we want to use laravel authenticate middleware and we will redirect!
+        $response->assertRedirect(route("login"));
+        $this->assertDatabaseMissing("comments", $comment);
+    }
 }
