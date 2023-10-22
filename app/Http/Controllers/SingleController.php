@@ -12,4 +12,14 @@ class SingleController extends Controller
         $comments = $post->comments()->latest()->paginate(10);
         return view("single", compact(["post", "comments"]));
     }
+
+    public function comment(Request $request, Post $post)
+    {
+        $post->comments()->create([
+            "user_id" => auth()->user()->id,
+            "text" => $request->input("text")
+        ]);
+
+        return redirect()->route("single", $post->id);
+    }
 }
