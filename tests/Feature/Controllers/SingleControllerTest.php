@@ -2,13 +2,16 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class SingleControllerTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      *
@@ -28,5 +31,21 @@ class SingleControllerTest extends TestCase
             "post" => $post,
             "comments" => $post->comments()->latest()->paginate(10)
         ]);
+    }
+
+    public function testCommentMethodWhenUserLoggedIn()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
+
+        $comment = Comment::factory()->state([
+            "user_id" => $user->id,
+            "commentable_id" => $post->id,
+        ])->make()->toArray();
+
+        $response = $this->actingAs($user)
+            ->post(route("single.comment", $post->id), ["text" => $comment["text"]]);
+        $response->assertRedirect(route("single", $post->id));
+        $this->assertDatabaseHas("comments", $comment);
     }
 }
