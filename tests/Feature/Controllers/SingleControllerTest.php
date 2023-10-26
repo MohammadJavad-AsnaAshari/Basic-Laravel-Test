@@ -65,9 +65,12 @@ class SingleControllerTest extends TestCase
 
         unset($comment["user_id"]);
 
-        $response = $this->post(route("single.comment", $post->id), ["text" => $comment["text"]]);
-//        $response->assertUnauthorized();      // we can't use this method! because we want to use laravel authenticate middleware and we will redirect!
-        $response->assertRedirect(route("login"));
+        $response = $this
+            ->withHeaders([
+                "HTTP_X-Requested-with" => "XMLHttpRequest"
+            ])
+            ->postJson(route("single.comment", $post->id), ["text" => $comment["text"]]);
+        $response->assertUnauthorized();
         $this->assertDatabaseMissing("comments", $comment);
     }
 }
