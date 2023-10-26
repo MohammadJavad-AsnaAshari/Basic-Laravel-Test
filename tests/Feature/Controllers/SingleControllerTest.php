@@ -45,8 +45,13 @@ class SingleControllerTest extends TestCase
         ])->make()->toArray();
 
         $response = $this->actingAs($user)
-            ->post(route("single.comment", $post->id), ["text" => $comment["text"]]);
-        $response->assertRedirect(route("single", $post->id));
+            ->withHeaders([
+                "HTTP_X-Requested-with" => "XMLHttpRequest"
+            ])
+            ->postJson(route("single.comment", $post->id), ["text" => $comment["text"]]);
+        $response->assertOk()->assertJson([
+            "created" => true
+        ]);
         $this->assertDatabaseHas("comments", $comment);
     }
 
