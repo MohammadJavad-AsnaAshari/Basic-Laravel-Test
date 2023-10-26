@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Psy\Util\Json;
 
 class SingleController extends Controller
 {
@@ -20,6 +21,8 @@ class SingleController extends Controller
             "text" => $request->input("text")
         ]);
 
-        return redirect()->route("single", $post->id);
+        return [
+            "created" => true
+        ];
     }
 }
