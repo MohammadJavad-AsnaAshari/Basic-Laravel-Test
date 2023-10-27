@@ -12,6 +12,7 @@ use Tests\TestCase;
 class SingleControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -72,5 +73,27 @@ class SingleControllerTest extends TestCase
             ->postJson(route("single.comment", $post->id), ["text" => $comment["text"]]);
         $response->assertUnauthorized();
         $this->assertDatabaseMissing("comments", $comment);
+    }
+
+    public function testCommentMethodValidRequiredData()
+    {
+        $post = Post::factory()->create();
+        $user = User::factory()->create();
+
+        $response = $this
+            ->withHeaders([
+                "HTTP_X-Requested-with" => "XMLHttpRequest"
+            ])
+            ->actingAs($user)
+            ->postJson(
+                route("single.comment", $post->id),
+                ["text" => ""]
+            );
+
+//        $response->assertSessionHasErrors();      //If use post instead postJson
+        $response->assertJsonValidationErrors([
+                "text" => "The text field is required."
+            ]
+        );
     }
 }
