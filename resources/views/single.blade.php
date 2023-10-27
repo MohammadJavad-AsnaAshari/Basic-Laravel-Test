@@ -10,4 +10,10 @@
             </li>
         @endforeach
     </ul>
+
+    @auth()
+        <form action="{{route("single.comment", $post->id)}}" method="post">
+            <textarea name="text" id="" cols="30" rows="10"></textarea>
+        </form>
+    @endauth
 @endsection
