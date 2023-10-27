@@ -33,4 +33,24 @@ class SingleViewTest extends TestCase
             $dom->query("//form[@method='post'][@action='$action']/textarea[@name='text']")
         );
     }
+
+    public function testSingleViewRenderWhenUserNotLoggedIn()
+    {
+        $post = Post::factory()->create();
+        $comments = [];
+
+        $view = (string) $this
+            ->view("single", compact(["post", "comments"]));
+
+        $dom = new \DOMDocument();
+        $dom->loadHTML($view);
+        $dom = new \DOMXPath($dom);
+
+        $action = route("single.comment", $post->id);
+
+        $this->assertCount(
+            0,
+            $dom->query("//form[@method='post'][@action='$action']/textarea[@name='text']")
+        );
+    }
 }
